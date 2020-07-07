@@ -1,0 +1,32 @@
+.playlists{
+    float: left;
+    width: 50%;
+    height: 100%;
+    position: relative;
+    top: 0;
+    z-index: -10;
+    background-color: #cccccc;
+    padding-top: 10%;
+}
+
+.playlists .playlist{
+    position: relative;
+    left: 10%;
+    width: 80%;
+    height: 80px;
+    line-height: 80px;
+    background-color: white;
+    margin: 5px;
+}
+
+.playlists .playlist .image{
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    float: left;
+}
+
+.playlists .playlist .title{
+    float: left;
+    margin-left: 10px;
+}

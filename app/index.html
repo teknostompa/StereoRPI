@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/selector.css">
+    <link rel="stylesheet" href="css/content.css">
+    <link rel="stylesheet" href="css/player.css">
+    <link rel="stylesheet" href="css/playlists.css">
+    <script src="https://kit.fontawesome.com/c91c756704.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="container"><!-- Remove before compiling! -->
+        <nav>
+            <div id="buttons">
+                <div id="close">
+                    <span>&times;</span>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="selector">
+        <div class="select"><i class="fab fa-spotify"></i></div>
+        <div class="select"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="select"><i class="fab fa-bluetooth-b"></i></div>
+    </div>
+    <div class="content">
+        <div class="page spotify 1">
+            <div class="player">
+                <div class="albumArt">
+
+                </div>
+                <div class="songInfo">
+                    test<br>test2
+                </div>
+                <div class="controls">
+                    <div class="back" onclick="prevSong()">
+                        <i class="fas fa-backward"></i>
+                    </div>
+                    <div class="playPause">
+                        <i class="fas fa-pause"></i>
+                    </div>
+                    <div class="forward" onclick="skipSong()">
+                        <i class="fas fa-forward"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="playlists">
+
+            </div>
+        </div>
+        <div class="page metrics 2">
+            METRICS
+        </div>
+        <div class="page airplay 3">
+            AIRPLAY
+        </div>
+    </div>
+</body>
+<script src="js/menu.js"></script>
+<script src="js/selector.js"></script>
+<script src="js/spotify.js"></script>
+<script src="js/player.js"></script>
+</html>
