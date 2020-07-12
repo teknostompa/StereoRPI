@@ -4,17 +4,39 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "electron ."
+    "test": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "author": "Tom Evaldsson",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
+    "electron-builder": "^22.7.0",
     "electron": "^9.0.5",
     "electron-reload": "^1.5.0",
-    "electron.js": "0.0.1",
+    "electron.js": "0.0.1"
+  },
+  "dependencies": {
+    "cordova-plugin-ble-central": "^1.2.5",
     "jquery": "^3.5.1",
     "spotify-node-applescript": "^1.1.1",
     "spotify-personal-auth": "^1.1.6",
-    "spotify-web-api-js": "^1.4.0"
+    "spotify-web-api-js": "^1.4.0",
+    "spotify-web-api-node": "^4.0.0"
+  },
+  "build": {
+    "appId": "car.app.id",
+    "mac": {
+      "category": "main.app"
+    }
+  },
+  "linux": {
+    "target": {
+      "target": "appimage",
+      "arch": [
+        "armv7l"
+      ]
+    }
   }
 }

@@ -1,83 +1,105 @@
-var Spotify = require('spotify-web-api-js');
+const SpotifyWebApi = require('spotify-web-api-node')
+const api = new SpotifyWebApi()
 var auth = require('spotify-personal-auth')
-auth.config({
-  clientId: '2328048ae2af4a0ba41c6f75f943a1ac',
-  clientSecret: '7c78c305e0624c43b1326b3e5aabaee4',
-  scope: ['streaming', 'user-read-playback-state']
-})
 var enabled = false;
-var s = new Spotify();
-//var access_token = 'BQC7OGmaNQLNXfhFzx7otSorpOU3FzJTvZO5gs0_ElMRQ7ws212uBmT98FIBeXLlkOpi8KWUT9LkRCKqWOir_J8YMpugCTyuaj92jaN4RXkHxncfsRXOxSYyEwMeasrnmSC_uF439dzipHzVqvnTGpc7e2j3CKzeEL74Y2TFpXzW'
-auth.token().then(([token, refresh]) => {
-  s.setAccessToken(token)
-  setAlbumCover()
-  createPlaylistList();
-  win.setAlwaysOnTop(true,"floating",1);
-})
-//s.setAccessToken(access_token);
-function setAlbumCover(){
-  s.getMyCurrentPlayingTrack().then(function(data) {
-    //console.log("the Data",data);
-    setTimeout(function(){
+var intervalID;
+var playtime;
+var songtime;
+
+setApiKeys();
+
+function setAlbumCover(setprogress){
+  api.getMyCurrentPlaybackState().then(function(data1) {
+    var data = data1.body;
     document.getElementsByClassName('albumArt')[0].style.backgroundImage = "url(" + data.item.album.images[0].url + ")"
     document.getElementsByClassName('songInfo')[0].innerHTML = data.item.name + "<br>" + data.item.artists[0].name;
-    },100);
-    //console.log(data.item.name + "<br>" + data.item.artists[0].name);
+    playtime = data.progress_ms;
+    songtime = data.item.duration_ms;
+    clearInterval(intervalID);
+    if(data.is_playing==true){
+      intervalID = setInterval(function(){
+        playtime += 1000;
+        document.getElementsByClassName("progressBar")[0].style.width = playtime/songtime*100 + "%";
+      },1000)
+    }
+    document.getElementsByClassName("progressBar")[0].style.width = playtime/songtime*100 + "%";      
+    setTimeout(function(){
+      clearInterval(intervalID);
+      setAlbumCover();
+    },(data.item.duration_ms - data.progress_ms) + 1000)
+    
   }, function(err) {
     console.error(err);
   });
 }
 
 function createPlaylistList(){
-  s.getUserPlaylists().then(function(data) {
-    console.log(data.items);
+  api.getUserPlaylists()
+  .then(function(data1) {
+    var data = data1.body;
     var playlists = data.items;
     for(var i = 0; i < playlists.length; i++){
       var playlist = document.createElement('div');
       playlist.className = "playlist";
-
+      playlist.id = "a" + i;
+      playlist.addEventListener("click",playPlaylist);
       var cover = document.createElement('div');
       cover.className = "image";
       cover.style.backgroundImage = "url(" + playlists[i].images[0].url + ")";
+      cover.id = "a" + i;
       playlist.appendChild(cover);
 
       var title = document.createElement('div');
       title.innerHTML = playlists[i].name;
       title.className = "title"
+      title.id = "a" + i;
       playlist.appendChild(title);
-
+      enabled = true;
       document.getElementsByClassName('playlists')[0].appendChild(playlist);
       
     }
-    var elems = document.getElementsByClassName("playlist");
-    for(var i = 0; i < elems.length; i++){
-      elems[0].addEventListener("click", playPlaylist(i))
-    }
-    enabled = true;
-  }, function(err) {
-    console.error(err);
+  },function(err) {
+    console.log('Something went wrong!', err);
   });
 }
 
 function playPlaylist(playlist){
+  var index = window.event.target.id.split("a")[1];
   if(enabled){
-    s.getUserPlaylists().then(function(data) {
-      console.log(data.items)
-      //s.addTracksToQueue()
-      s.getPlaylistTracks(data.items[playlist].id).then(function(data) {
-        console.log(data);
-        //var i = 0; i < data.items.length; i++
-        var i = 0
-        data.items.forEach((item) =>{
-          setTimeout(s.addTracksToQueue("spotify:track:"+item.track.id),100*i)
-        i++
-        })
-        //skipSong();
-      }, function(err) {
-        console.error(err);
-      });
+  api.getUserPlaylists()
+  .then(function(data1) {
+    var data = data1.body;
+    api.getPlaylist(data.items[index].id)
+    .then(function(data) {
+      api.play({
+        uris: data['body']['tracks']['items'].map(item => item['track']['uri'])
+      })
+      setTimeout(function(){
+        setAlbumCover();
+      },1000)
     }, function(err) {
-      console.error(err);
+      console.log('Something went wrong!', err);
     });
+  }, function(err) {
+    console.error(err);
+  });
   }
+}
+
+function setApiKeys(){
+  auth.config({
+    clientId: '2328048ae2af4a0ba41c6f75f943a1ac',
+    clientSecret: '7c78c305e0624c43b1326b3e5aabaee4',
+    scope: ['streaming', 'user-read-playback-state','user-modify-playback-state', 'user-top-read']
+  })
+  auth.token().then(([token, refresh]) => {
+    api.setAccessToken(token)
+    api.setRefreshToken(refresh);
+    setAlbumCover()
+    createPlaylistList();
+    win.setAlwaysOnTop(true,"floating",1);
+  })
+  setTimeout(function(){
+    setApiKeys();
+  },3600*1000)
 }

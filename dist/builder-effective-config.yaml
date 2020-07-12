@@ -1,0 +1,7 @@
+directories:
+  output: dist
+  buildResources: build
+appId: car.app.id
+mac:
+  category: main.app
+electronVersion: 9.0.5

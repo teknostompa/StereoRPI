@@ -35,9 +35,23 @@
 .player .songInfo{
     position: relative;
     width: 60%;
-    top: 23%;
+    top: 26%;
     left: 20%;
     height: 70px;
     line-height: 20px;
     text-align: center;
+}
+.player .playTime{
+    background-color: #bbbbbb;
+    position: relative;
+    top: 8%;
+    left: 20%;
+    height: 5px;
+    width: 60%;
+}
+
+.player .playTime .progressBar{
+    width: 0%;
+    height: 100%;
+    background-color: black;
 }

@@ -1,8 +1,7 @@
 function playMusic(){
-  s.play()
+  api.play()
   .then(function(data) {
     setAlbumCover();
-    console.log(data);
     document.getSelection(".playPause i").anchorNode.className = "fas fa-pause";
     document.getElementsByClassName("playPause")[0].removeEventListener("click",playMusic);
     document.getElementsByClassName("playPause")[0].addEventListener("click",pauseMusic);
@@ -12,10 +11,9 @@ function playMusic(){
 }
 
 function pauseMusic(){
-  s.pause()
+  api.pause()
   .then(function(data) {
-    setAlbumCover();
-    console.log(data);
+    setAlbumCover(false);
     document.getSelection(".playPause i").anchorNode.className = "fas fa-play";
     document.getElementsByClassName("playPause")[0].removeEventListener("click",pauseMusic);
     document.getElementsByClassName("playPause")[0].addEventListener("click",playMusic);
@@ -25,7 +23,7 @@ function pauseMusic(){
 }
 
 function prevSong(){
-    s.skipToPrevious()
+    api.skipToPrevious()
     .then(function(data) {
         setTimeout(function(){
         setAlbumCover();
@@ -36,7 +34,7 @@ function prevSong(){
 }
 
 function skipSong(){
-    s.skipToNext()
+    api.skipToNext()
     .then(function(data) {
         setTimeout(function(){
         setAlbumCover();
@@ -50,7 +48,6 @@ function skipSong(){
 }
 
 window.addEventListener('load', function(){
-    console.log(document.getSelection(".playPause").anchorNode)
     document.getElementsByClassName("playPause")[0].addEventListener("click",pauseMusic);
 })
 
