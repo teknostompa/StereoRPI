@@ -34,6 +34,7 @@ function setAlbumCover(setprogress){
 }
 
 function createPlaylistList(){
+  var dailymixes = ['37i9dQZF1E38dQFE3VMK9y'];
   api.getUserPlaylists()
   .then(function(data1) {
     var data = data1.body;
@@ -90,7 +91,7 @@ function setApiKeys(){
   auth.config({
     clientId: '2328048ae2af4a0ba41c6f75f943a1ac',
     clientSecret: '7c78c305e0624c43b1326b3e5aabaee4',
-    scope: ['streaming', 'user-read-playback-state','user-modify-playback-state', 'user-top-read']
+    scope: ['streaming', 'user-library-read', 'user-read-playback-state','user-modify-playback-state', 'user-top-read']
   })
   auth.token().then(([token, refresh]) => {
     api.setAccessToken(token)
