@@ -11,6 +11,7 @@ setApiKeys();
 function setAlbumCover(setprogress){
   api.getMyCurrentPlaybackState().then(function(data1) {
     var data = data1.body;
+    console.log(data);
     document.getElementsByClassName('albumArt')[0].style.backgroundImage = "url(" + data.item.album.images[0].url + ")"
     document.getElementsByClassName('songInfo')[0].innerHTML = data.item.name + "<br>" + data.item.artists[0].name;
     playtime = data.progress_ms;
@@ -34,6 +35,7 @@ function setAlbumCover(setprogress){
 }
 
 function createPlaylistList(){
+  // Playlists
   var dailymixes = ['37i9dQZF1E38dQFE3VMK9y'];
   api.getUserPlaylists()
   .then(function(data1) {
@@ -62,6 +64,8 @@ function createPlaylistList(){
   },function(err) {
     console.log('Something went wrong!', err);
   });
+  //Queue
+
 }
 
 function playPlaylist(playlist){

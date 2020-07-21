@@ -18,8 +18,12 @@
     "electron.js": "0.0.1"
   },
   "dependencies": {
+    "bleno": "^0.5.0",
+    "bluetooth": "^3.0.0",
+    "bluetoothctl": "^1.1.0",
     "cordova-plugin-ble-central": "^1.2.5",
     "jquery": "^3.5.1",
+    "node-ble": "^1.2.0",
     "spotify-node-applescript": "^1.1.1",
     "spotify-personal-auth": "^1.1.6",
     "spotify-web-api-js": "^1.4.0",
